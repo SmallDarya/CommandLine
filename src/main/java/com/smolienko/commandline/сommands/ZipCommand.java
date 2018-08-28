@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
@@ -109,18 +107,12 @@ public class ZipCommand extends BaseCommand {
     }
 
     private String getArchiveName() {
-        String zipFileName;
+        Path path = Paths.get(parameters.get(FILE_PATH));
         if (parameters.containsKey(TARGET_PATH)) {
-            zipFileName = parameters.get(TARGET_PATH);
+            Path archivePath = Paths.get(parameters.get(TARGET_PATH), path.getFileName().toString().replaceAll("\\..*$", ""));
+            return archivePath.toString();
         } else {
-            zipFileName = parameters.get(FILE_PATH);
+            return path.toString().replaceAll("\\..*$", "");
         }
-        Path path = Paths.get(zipFileName);
-        if (Files.isDirectory(path)) {
-            zipFileName = path.getFileName().toString();
-        } else {
-            zipFileName = path.getFileName().toString().replaceAll("\\..*$", "");
-        }
-        return zipFileName;
     }
 }

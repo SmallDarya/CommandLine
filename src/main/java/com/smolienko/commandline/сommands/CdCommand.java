@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
@@ -21,12 +20,12 @@ import org.springframework.stereotype.Component;
  * @author Pugovka
  */
 @Component("cd")
-public class CdCommand extends BaseCommand{
-    
-    private static final String DIR_PATH="newCurrentDir";
+public class CdCommand extends BaseCommand {
+
+    private static final String DIR_PATH = "newCurrentDir";
 
     @Override
-    public void execute()  throws BaseCommandLineException {;
+    public void execute() throws BaseCommandLineException {;
         String path = parameters.get(DIR_PATH);
         this.context.changeWorkingDir(Paths.get(path));
     }

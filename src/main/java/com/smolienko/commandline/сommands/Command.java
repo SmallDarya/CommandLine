@@ -14,10 +14,13 @@ import org.springframework.context.MessageSource;
  * @author Pugovka
  */
 public interface Command {
-   
-   void execute() throws BaseCommandLineException;
-   void parseParameters(String parameters) throws BaseCommandLineException; 
-   void setExecutionContext(Context context);
-   void setMessageSource(MessageSource resourse);
+
+    void execute() throws BaseCommandLineException;
+
+    void parseParameters(String parameters) throws BaseCommandLineException;
+
+    void setExecutionContext(Context context);
+
+    void setMessageSource(MessageSource resourse);
 
 }

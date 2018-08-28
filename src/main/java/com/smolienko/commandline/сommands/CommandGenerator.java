@@ -1,16 +1,13 @@
 package com.smolienko.commandline.сommands;
 
 import com.smolienko.commandline.commandlineexceptions.BaseCommandLineException;
-import com.smolienko.commandline.сommands.Command;
 import com.smolienko.commandline.commandlineexceptions.UnknownCommandException;
 import com.smolienko.commandline.configuration.AppConfig;
-import java.util.ResourceBundle;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import org.springframework.stereotype.Component;
 
 /**
  *
