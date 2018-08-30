@@ -1,15 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.smolienko.commandline;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.nio.file.Path;
-import java.util.Formatter;
-import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /**
@@ -30,4 +21,5 @@ public interface Context {
     
     void printOnConsole(String message);
     
+     void formattingPrintOnConsole(String message, Object... args);
 }

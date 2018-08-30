@@ -1,15 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.smolienko.commandline.сommands;
 
 import com.smolienko.commandline.Context;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+
 
 /**
  *
@@ -17,8 +19,9 @@ import org.springframework.context.MessageSource;
  */
 public abstract class BaseCommand implements Command  {
 
-    protected Map<String, String> parameters;
+    protected Map<String, String> parameters =new HashMap<>();;
     protected Context context;
+    @Autowired
     protected MessageSource resources;
 
     @Override
@@ -26,12 +29,8 @@ public abstract class BaseCommand implements Command  {
         this.context = context;
     }  
 
-    @Override
-    public void setMessageSource(MessageSource resourse) {
-       this.resources=resourse;
-    }
     
-    boolean getYesNoAnswer(){
+    protected boolean getYesNoAnswer(){
         Scanner inStream = this.context.getInStream();
         while(true){
             String answer=inStream.nextLine();
@@ -41,6 +40,21 @@ public abstract class BaseCommand implements Command  {
                 return true;
             this.context.printOnConsole(resources.getMessage("wrong.answer.repeat", null, "Default", Locale.getDefault()));
         }
+    }
+    
+    protected List<String>getParametersList(String str){
+          List<String>  matchList =   new ArrayList<String>();
+     if (str == null || str.isEmpty()) {
+            return matchList;
+        }
+        str = str.trim().replaceAll("[\\s]{2,}", " ");
+    
+        Pattern regex = Pattern.compile("[^\\s\"']+|\"([^\"]*)\"|'([^']*)'");
+        Matcher regexMatcher = regex.matcher(str);
+        while (regexMatcher.find()) {
+              matchList.add(regexMatcher.group().replaceAll("\"|\'", ""));
+        }
+        return matchList;
     }
     
 }

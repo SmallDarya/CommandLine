@@ -4,21 +4,27 @@ import com.smolienko.commandline.сommands.CommandGenerator;
 import com.smolienko.commandline.commandlineexceptions.BaseCommandLineException;
 import com.smolienko.commandline.commandlineexceptions.CantFindParameterException;
 import com.smolienko.commandline.commandlineexceptions.DirNotExistException;
+import com.smolienko.commandline.commandlineexceptions.SyntaxisException;
 import com.smolienko.commandline.commandlineexceptions.UnknownCommandException;
 import com.smolienko.commandline.commandlineexceptions.ZipExecutionException;
 import com.smolienko.commandline.сommands.Command;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
 
 
 /**
  *
  * @author Darya Smolienko
  */
+@Component
 public  class CommandLine implements Context{
 
     private static Scanner in = new Scanner(System.in);
@@ -27,11 +33,14 @@ public  class CommandLine implements Context{
     
     private String currenDir = System.getProperty("user.dir");
      
+    @Autowired
+    CommandGenerator commandProcessor;
+    
+    @Autowired
+     MessageSource resources;
     
     @Override
     public  void startWork() {
-       
-        CommandGenerator commandProcessor = new CommandGenerator();
         Command command;
         while (true) {
             out.print(currenDir+">");
@@ -43,13 +52,15 @@ public  class CommandLine implements Context{
                 command.setExecutionContext(this);
                 command.execute();
             } catch (UnknownCommandException ex) {
-                out.println("Неизвестная комманда");
+                out.println(resources.getMessage("unknown.command", null, Locale.getDefault()));
+            } catch (SyntaxisException ex) {
+                out.println(resources.getMessage("syntaxis.exception", null, Locale.getDefault()));
             } catch (ZipExecutionException ex) {
-                out.println("Ошибка архивирования");
+                out.println("Ошибка архивации/разархивации");
             } catch (CantFindParameterException ex) {
                 out.println("Не могу найти обязательные параметры");
             } catch (DirNotExistException ex) {
-                out.println("Указанная папка не существует");
+                out.println(resources.getMessage("dir.not.exist", null, Locale.getDefault()));
             } catch (BaseCommandLineException ex) {
                 Logger.getLogger(CommandLine.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -79,5 +90,10 @@ public  class CommandLine implements Context{
     @Override
     public void printOnConsole(String str) {
          out.println(str);
+    }
+
+    @Override
+    public void formattingPrintOnConsole(String message, Object... args) {
+         out.printf(message, args);
     }
 }

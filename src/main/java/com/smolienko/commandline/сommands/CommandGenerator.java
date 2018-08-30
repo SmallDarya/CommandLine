@@ -2,20 +2,20 @@ package com.smolienko.commandline.сommands;
 
 import com.smolienko.commandline.commandlineexceptions.BaseCommandLineException;
 import com.smolienko.commandline.commandlineexceptions.UnknownCommandException;
-import com.smolienko.commandline.configuration.AppConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.MessageSource;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
 
 /**
  *
  * @author Darya Smolienko
  */
+@Component
 public class CommandGenerator  {
     
-    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    @Autowired
+    ApplicationContext applicationContext;// = new AnnotationConfigApplicationContext(AppConfig.class);
     
 
     public CommandGenerator() {
@@ -40,8 +40,6 @@ public class CommandGenerator  {
         }
         else
             throw  new UnknownCommandException();
-        MessageSource resources = applicationContext.getBean(MessageSource.class);
-        command.setMessageSource(resources);
         String parametersString= commandLine.replaceFirst(commandName, "");
         command.parseParameters(parametersString);
         return command;
