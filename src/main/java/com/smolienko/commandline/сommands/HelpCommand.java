@@ -5,10 +5,12 @@ import com.smolienko.commandline.commandlineexceptions.BaseCommandLineException;
 import com.smolienko.commandline.commandlineexceptions.CommandLineAlgorithmException;
 import com.smolienko.commandline.commandlineexceptions.SyntaxisException;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +21,10 @@ import org.springframework.stereotype.Component;
 @CommandDescription(
         parameters = "[comandName]",
         name="help",
-        description = "Выводит список всех команд или информацию по конкретной команде."
+        description = "help.description"
 )
 @Component("help")
+@Scope("prototype")
 public class HelpCommand extends BaseCommand {
     
     @Autowired
@@ -63,7 +66,7 @@ public class HelpCommand extends BaseCommand {
             Class<?> cl = Class.forName(bd.getBeanClassName());
             CommandDescription annotationDescription = cl.getAnnotation(CommandDescription.class);
             if (annotationDescription != null) {
-                context.formattingPrintOnConsole("%-7s %s", annotationDescription.name(), annotationDescription.description());
+                context.formattingPrintOnConsole("%-10s %s", annotationDescription.name(),resources.getMessage(annotationDescription.description(), null, Locale.getDefault()) );
                 context.printOnConsole("");
             }
         }
@@ -76,7 +79,7 @@ public class HelpCommand extends BaseCommand {
                 if (annotationDescription != null) {
                 context.printOnConsole(annotationDescription.name()+" "+annotationDescription.parameters());
                 context.printOnConsole("");
-                context.printOnConsole(annotationDescription.description());
+                context.printOnConsole(resources.getMessage(annotationDescription.description(), null, Locale.getDefault()) );
             }
     }
 }

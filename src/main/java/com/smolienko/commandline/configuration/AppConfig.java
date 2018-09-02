@@ -7,7 +7,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 /**
  *
- * @author Pugovka
+ * @author Darya Smolienko
  */
 @Configuration
 public class AppConfig {

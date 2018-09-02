@@ -7,7 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  *
- * @author Pugovka
+ * The class describe annotation for commands. It contains information about 
+ * title, parameters and description. 
+ * 
+ * @author Darya Smolienko
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE) //can use in method only.

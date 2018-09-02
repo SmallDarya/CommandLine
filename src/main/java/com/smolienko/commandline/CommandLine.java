@@ -19,35 +19,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-
 /**
  *
+ * The class is realization of command line. Class has method startWork which 
+ * start listening of input stream for commands. When user write command, 
+ * command line appriciate this comand an creat an instance, and then execute it.
+ * 
  * @author Darya Smolienko
  */
 @Component
-public  class CommandLine implements Context{
+public class CommandLine implements Context {
 
     private static Scanner in = new Scanner(System.in);
-    
+
     private static PrintStream out = System.out;
-    
+
     private String currenDir = System.getProperty("user.dir");
-     
+
     @Autowired
     CommandGenerator commandProcessor;
-    
+
     @Autowired
-     MessageSource resources;
-    
+    MessageSource resources;
+
     @Override
-    public  void startWork() {
+    public void startWork() {
         Command command;
         while (true) {
-            out.print(currenDir+">");
+            out.print(currenDir + ">");
             String inputLine = in.nextLine();
             try {
-                if(inputLine.isEmpty())
+                if (inputLine.isEmpty()) {
                     continue;
+                }
                 command = commandProcessor.getCommandFromLine(inputLine);
                 command.setExecutionContext(this);
                 command.execute();
@@ -56,9 +60,9 @@ public  class CommandLine implements Context{
             } catch (SyntaxisException ex) {
                 out.println(resources.getMessage("syntaxis.exception", null, Locale.getDefault()));
             } catch (ZipExecutionException ex) {
-                out.println("Ошибка архивации/разархивации");
+                out.println(resources.getMessage("zip.exception", null, Locale.getDefault()));
             } catch (CantFindParameterException ex) {
-                out.println("Не могу найти обязательные параметры");
+                out.println(resources.getMessage("cant.find.parameter", null, Locale.getDefault()));
             } catch (DirNotExistException ex) {
                 out.println(resources.getMessage("dir.not.exist", null, Locale.getDefault()));
             } catch (BaseCommandLineException ex) {
@@ -66,34 +70,29 @@ public  class CommandLine implements Context{
             }
         }
     }
-    
+
     @Override
-    public void changeWorkingDir(Path dirPath){
+    public void changeWorkDir(Path dirPath) {
         this.currenDir = dirPath.toString();
-    }
-    
-    @Override
-    public void clearAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Path getWorkingDir() {
-       return Paths.get(currenDir);
+        return Paths.get(currenDir);
     }
 
     @Override
     public Scanner getInStream() {
-       return in;
+        return in;
     }
 
     @Override
     public void printOnConsole(String str) {
-         out.println(str);
+        out.println(str);
     }
 
     @Override
     public void formattingPrintOnConsole(String message, Object... args) {
-         out.printf(message, args);
+        out.printf(message, args);
     }
 }

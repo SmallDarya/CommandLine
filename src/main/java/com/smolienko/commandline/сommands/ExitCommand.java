@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
  * @author Darya Smolienko
  */
 @CommandDescription(
-	parameters = "Без параметров.",
+	parameters = "",
         name="exit",
-        description = "Выход из командной строки."
+        description = "exit.description"
 )
 @Component("exit")
 public class ExitCommand extends BaseCommand{

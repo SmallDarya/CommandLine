@@ -2,7 +2,7 @@ package com.smolienko.commandline.commandlineexceptions;
 
 /**
  *
- * @author Pugovka
+ * @author Darya Smolienko
  */
 public class CantFindParameterException extends BaseCommandLineException{
     private final static String MESSAGE="Can't find parameter."; 

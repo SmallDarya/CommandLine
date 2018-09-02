@@ -2,7 +2,7 @@ package com.smolienko.commandline.commandlineexceptions;
 
 /**
  *
- * @author Pugovka
+ * @author Darya Smolienko
  */
 public class SyntaxisException extends BaseCommandLineException{
     private final static String MESSAGE="Syntaxis exception."; 

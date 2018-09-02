@@ -1,6 +1,7 @@
 package com.smolienko.commandline.сommands;
 
 import com.smolienko.commandline.commandlineexceptions.BaseCommandLineException;
+import com.smolienko.commandline.commandlineexceptions.SyntaxisException;
 import com.smolienko.commandline.commandlineexceptions.UnknownCommandException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -15,15 +16,15 @@ import org.springframework.stereotype.Component;
 public class CommandGenerator  {
     
     @Autowired
-    ApplicationContext applicationContext;// = new AnnotationConfigApplicationContext(AppConfig.class);
+    ApplicationContext applicationContext;
     
 
     public CommandGenerator() {
     }
             
-    String getCommandName(String commandLine){
+    String getCommandName(String commandLine) throws SyntaxisException{
      if(commandLine==null)
-            throw new NullPointerException("Input line can't be null");
+            throw new SyntaxisException();
         commandLine= commandLine.trim();
         return commandLine.split(" ")[0];
     }

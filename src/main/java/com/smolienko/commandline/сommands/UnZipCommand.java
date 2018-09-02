@@ -14,18 +14,20 @@ import java.util.Scanner;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Pugovka
+ * @author Darya Smolienko
  */
 @CommandDescription(
 	parameters = "[zipFile] [targetDirectory]",
         name="unzip",
-        description = "Извлеч архив в текущую директорию или указанную в параметрах."
+        description = "unzip.descriptin"
 )
 @Component("unzip")
+@Scope("prototype")
 public class UnZipCommand extends BaseCommand {
 
     private static final String FILE_PATH = "fileName";
@@ -56,8 +58,8 @@ public class UnZipCommand extends BaseCommand {
     }
 
     @Override
-    public void parseParameters(String parameters) throws BaseCommandLineException {
-        List<String> parametersList=getParametersList(parameters);
+    public void parseParameters(String parametersStr) throws BaseCommandLineException {
+        List<String> parametersList=getParametersList(parametersStr);
         if(parametersList.isEmpty()||parametersList.size()>2)
             throw new SyntaxisException();
         
@@ -65,10 +67,10 @@ public class UnZipCommand extends BaseCommand {
         if (Files.notExists(fileName)) {
             throw new DirNotExistException();
         }
-        this.parameters.put(FILE_PATH, fileName.toString());
+        parameters.put(FILE_PATH, fileName.toString());
 
         if (parametersList.size()== 2) {
-           this.parameters.put(TARGET_PATH, parametersList.get(1));
+           parameters.put(TARGET_PATH, parametersList.get(1));
         }
     }
 

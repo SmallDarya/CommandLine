@@ -2,7 +2,7 @@ package com.smolienko.commandline.commandlineexceptions;
 
 /**
  *
- * @author Pugovka
+ * @author Darya Smolienko
  */
 public abstract class BaseCommandLineException extends Exception {
 

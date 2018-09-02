@@ -14,13 +14,25 @@ import org.springframework.context.MessageSource;
 
 
 /**
- *
- * @author Pugovka
+ * Class contains main information about command and some base methods.
+ * 
+ * @author Darya Smolienko
  */
 public abstract class BaseCommand implements Command  {
 
-    protected Map<String, String> parameters =new HashMap<>();;
+     /**
+     * The parameters that contained every comand, it can be empry.
+     */
+    protected Map<String, String> parameters =new HashMap<>();
+    
+     /**
+     * Context for executing command.
+     */
     protected Context context;
+    
+     /**
+     * Mesages for locale
+     */
     @Autowired
     protected MessageSource resources;
 
@@ -29,7 +41,11 @@ public abstract class BaseCommand implements Command  {
         this.context = context;
     }  
 
-    
+     /**
+     * It is a simple dialog. The function return users ansfer on yes/no question
+     * 
+     * @return  users answer
+     */
     protected boolean getYesNoAnswer(){
         Scanner inStream = this.context.getInStream();
         while(true){

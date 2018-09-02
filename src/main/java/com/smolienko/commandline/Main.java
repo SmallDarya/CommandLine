@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  *
- * @author Pugovka
+ * @author Darya Smolienko
  */
 @SpringBootApplication
 public class Main implements CommandLineRunner {
