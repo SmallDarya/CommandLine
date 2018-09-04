@@ -16,17 +16,20 @@ import org.springframework.stereotype.Component;
 
 /**
  *
+ * The command write information about all commands or about one command if
+ * parameterts contains name of concrete command.
+ *
  * @author Darya Smolienko
  */
 @CommandDescription(
         parameters = "[comandName]",
-        name="help",
+        name = "help",
         description = "help.description"
 )
 @Component("help")
 @Scope("prototype")
 public class HelpCommand extends BaseCommand {
-    
+
     @Autowired
     ApplicationContext appContext;
 
@@ -59,6 +62,10 @@ public class HelpCommand extends BaseCommand {
         this.parameters.put(COMMAND_NAME, parametersList.get(0));
     }
 
+    /**
+     * Function show information about all commands.
+     *
+     */
     private void showAllCommands() throws ClassNotFoundException {
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
         scanner.addIncludeFilter(new AnnotationTypeFilter(CommandDescription.class));
@@ -66,20 +73,26 @@ public class HelpCommand extends BaseCommand {
             Class<?> cl = Class.forName(bd.getBeanClassName());
             CommandDescription annotationDescription = cl.getAnnotation(CommandDescription.class);
             if (annotationDescription != null) {
-                context.formattingPrintOnConsole("%-10s %s", annotationDescription.name(),resources.getMessage(annotationDescription.description(), null, Locale.getDefault()) );
+                context.formattingPrintOnConsole("%-10s %s", annotationDescription.name(), resources.getMessage(annotationDescription.description(), null, Locale.getDefault()));
                 context.printOnConsole("");
             }
         }
     }
 
+    /**
+     * Function show information about concrete commands.
+     *
+     * @param commandName - name of command
+     *
+     */
     private void showConcreteCommand(String commandName) throws ClassNotFoundException {
-                Object command = appContext.getBean(commandName);
-                Class<?> cl =command.getClass();
-                CommandDescription annotationDescription = cl.getAnnotation(CommandDescription.class);
-                if (annotationDescription != null) {
-                context.printOnConsole(annotationDescription.name()+" "+annotationDescription.parameters());
-                context.printOnConsole("");
-                context.printOnConsole(resources.getMessage(annotationDescription.description(), null, Locale.getDefault()) );
-            }
+        Object command = appContext.getBean(commandName);
+        Class<?> cl = command.getClass();
+        CommandDescription annotationDescription = cl.getAnnotation(CommandDescription.class);
+        if (annotationDescription != null) {
+            context.printOnConsole(annotationDescription.name() + " " + annotationDescription.parameters());
+            context.printOnConsole("");
+            context.printOnConsole(resources.getMessage(annotationDescription.description(), null, Locale.getDefault()));
+        }
     }
 }

@@ -22,7 +22,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * The command can put file or directory to the archive in current directory 
+ * or directory specified in the parameters.
+ * 
  * @author Darya Smolienko
  */
 @CommandDescription(
@@ -81,6 +83,12 @@ public class ZipCommand extends BaseCommand {
         }
     }
 
+    /**
+     * The method checks if the archive exists.
+     * 
+     * @return true if if exist.
+     *
+     */
     private boolean checkArchivePath(Path archivePath) throws IOException {
         if (Files.exists(archivePath)) {
             context.printOnConsole(resources.getMessage("file.already.exist", null, Locale.getDefault()));
@@ -94,6 +102,13 @@ public class ZipCommand extends BaseCommand {
         return true;
     }
 
+    /**
+     * The method returns archive path and name. It will be file name without 
+     * extention or directory name.
+     * 
+     * @return archive path
+     *
+     */
     private String getArchiveName() {
         Path path = Paths.get(parameters.get(FILE_PATH));
         if (parameters.containsKey(TARGET_PATH)) {
@@ -104,6 +119,13 @@ public class ZipCommand extends BaseCommand {
         }
     }
 
+     /**
+     * The method print dialog about archive password and get it from user if he
+     * agree. 
+     * 
+     * @param  parameters -zip parameters to put password into it.
+     *
+     */
     private void askAboutPassword(ZipParameters parameters) {
         Scanner inStream = this.context.getInStream();
         context.printOnConsole(resources.getMessage("put.password.question", null, Locale.getDefault()));

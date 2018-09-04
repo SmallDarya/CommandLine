@@ -8,13 +8,16 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.DosFileAttributes;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * The command count files in current work directory. Ypu can use fla /h to 
+ * include hidden files in count.
+ * 
  * @author Darya Smolienko
  */
 @CommandDescription(
@@ -27,6 +30,9 @@ import org.springframework.stereotype.Component;
 public class CountFilesCommand extends BaseCommand {
     
  private static final String COUNT_HIDDEN = "countHidden";
+ 
+ private static final String COUNT_HIDDEN_STR = "/h";
+ 
     @Override
     public void execute() throws BaseCommandLineException {
         try {
@@ -38,7 +44,8 @@ public class CountFilesCommand extends BaseCommand {
             DirectoryStream<Path> directoryStream = Files.newDirectoryStream(workingDir);
             for (Path path : directoryStream) {
                 if(!countHidden){
-                    if(Files.isHidden(path))
+                    DosFileAttributes attr = Files.readAttributes(path, DosFileAttributes.class);
+                    if(attr.isHidden())
                         continue;
                 }
                 count++;
@@ -55,7 +62,7 @@ public class CountFilesCommand extends BaseCommand {
         if (parametersList.size() > 1) {
             throw new SyntaxisException();
         }
-        if (parametersList.size() == 1 && parametersList.get(0).equals("/h")) {
+        if (parametersList.size() == 1 && parametersList.get(0).equals(COUNT_HIDDEN_STR)) {
             parameters.put(COUNT_HIDDEN, "true");
         }
 

@@ -17,7 +17,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * The command print the list of files and directories in current work directory.
+ * You can use /h to include iggen files to the list. Also you can use attributes
+ * /az and /za to sort results. 
+ * 
  * @author Darya Smolienko
  */
 @CommandDescription(
@@ -28,9 +31,17 @@ import org.springframework.stereotype.Component;
 @Component("fileslist")
 @Scope("prototype")
 public class FilesListCommand extends BaseCommand {
-    
+   
     private static final String COUNT_HIDDEN = "countHidden";
+    
     private static final String SORT_METHOD = "sortMethod";
+    
+    private static final String COUNT_HIDDEN_STR = "/h";
+    
+    private static final String A_Z_STR = "/az";
+    
+    private static final String Z_A_STR = "/za";
+    
     
     @Override
     public void execute() throws BaseCommandLineException {
@@ -73,24 +84,28 @@ public class FilesListCommand extends BaseCommand {
         if (parametersList.size() > 2) {
             throw new SyntaxisException();
         }
-        if (parametersList.contains("/h")) {
+        if (parametersList.contains(COUNT_HIDDEN_STR)) {
             parameters.put(COUNT_HIDDEN, "true");
         }
 
-        if (parametersList.contains("/az")) {
-            if (parametersList.contains("/za")) {
+        if (parametersList.contains(A_Z_STR)) {
+            if (parametersList.contains(Z_A_STR)) {
                 throw new SyntaxisException();
             }
-            parameters.put(SORT_METHOD, "az");
-        } else if (parametersList.contains("/za")) {
-            if (parametersList.contains("/az")) {
+            parameters.put(SORT_METHOD, A_Z_STR);
+        } else if (parametersList.contains(Z_A_STR)) {
+            if (parametersList.contains(A_Z_STR)) {
                 throw new SyntaxisException();
             }
-            parameters.put(SORT_METHOD, "za");
+            parameters.put(SORT_METHOD, Z_A_STR);
         }
 
     }
-    
+
+    /**
+     * Comporators for file names sort
+     *
+     */
     class AZComparator implements Comparator<String> {
         
         @Override

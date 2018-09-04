@@ -13,7 +13,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * Cd command change the work directory of context to another. For using this
+ * command you have to write directory path in parameters. 
+ * 
  * @author Darya Smolienko
  */
 

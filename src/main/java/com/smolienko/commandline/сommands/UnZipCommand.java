@@ -18,7 +18,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * The command can extract archive to the current directory 
+ * or directory specified in the parameters.
+ * 
  * @author Darya Smolienko
  */
 @CommandDescription(
@@ -74,6 +76,11 @@ public class UnZipCommand extends BaseCommand {
         }
     }
 
+    /**
+     * Return path of directory for archive.
+     *
+     * @return path of directory for archive.
+     */
     private Path getTargetPath() {
         if (parameters.containsKey(TARGET_PATH)) {
             return Paths.get(parameters.get(TARGET_PATH));

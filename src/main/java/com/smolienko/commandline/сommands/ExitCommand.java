@@ -5,7 +5,8 @@ import com.smolienko.commandline.commandlineexceptions.BaseCommandLineException;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * Special command for exit from command line.
+ * 
  * @author Darya Smolienko
  */
 @CommandDescription(
